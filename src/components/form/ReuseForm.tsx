@@ -48,9 +48,10 @@ export const ReuseForm: React.FC<ReuseFormInterface> = () => {
           onChangeValue={() => console.log("CHANGE")}
         />
       ))}
-      <HighlightButton onPressButton={() => console.log("SUBMIT")}>
-        <Text>Submit Form</Text>
-      </HighlightButton>
+      <HighlightButton
+        title={"Submit"}
+        onPressButton={() => console.log("SUBMIT")}
+      />
     </View>
   );
 };
