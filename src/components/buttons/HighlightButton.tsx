@@ -1,52 +1,104 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  TouchableHighlight,
-  GestureResponderEvent,
+  TouchableWithoutFeedback,
+  Animated,
+  Text,
   StyleSheet,
-  useColorScheme
+  View
 } from "react-native";
-import { SizesType } from "src/types";
-import { SIZES_PERCENT_VALUES } from "src/constants/styling";
 
-interface HighlightButtonInterface {
-  onPressButton: (event?: GestureResponderEvent) => void;
-  children: React.ReactNode;
-  size?: SizesType;
+type ButtonSize = "sm" | "md" | "lg";
+
+interface HighlightButtonProps {
+  title: string;
+  onPressButton: () => void;
+  size?: ButtonSize;
 }
 
-export const HighlightButton: React.FC<HighlightButtonInterface> = ({
+export const HighlightButton: React.FC<HighlightButtonProps> = ({
+  title,
   onPressButton,
-  size = "md",
-  ...props
+  size = "md" // default size
 }) => {
-  const isDarkMode = useColorScheme() === "dark";
+  const [scale] = useState(new Animated.Value(1));
 
-  const onPress = () => onPressButton();
+  const handlePressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.95,
+      useNativeDriver: true
+    }).start();
+  };
 
-  const sizeValue = SIZES_PERCENT_VALUES[size];
+  const handlePressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 4,
+      tension: 100,
+      useNativeDriver: true
+    }).start();
+  };
+
+  // Dynamic styles based on size
+  const sizeStyles = {
+    sm: { paddingVertical: 10, paddingHorizontal: 20, fontSize: 14 },
+    md: { paddingVertical: 16, paddingHorizontal: 28, fontSize: 18 },
+    lg: { paddingVertical: 22, paddingHorizontal: 36, fontSize: 22 }
+  };
 
   return (
-    <TouchableHighlight
-      activeOpacity={0.5}
-      onPress={onPress}
-      underlayColor={"darkred"}
-      style={isDarkMode ? styles.darkText : styles.whiteText}
+    <TouchableWithoutFeedback
+      onPress={onPressButton}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      style={{ width: "100%" }}
     >
-      {props.children}
-    </TouchableHighlight>
+      <Animated.View
+        style={[
+          styles.button,
+          { transform: [{ scale }] },
+          {
+            paddingVertical: sizeStyles[size].paddingVertical,
+            paddingHorizontal: sizeStyles[size].paddingHorizontal
+          }
+        ]}
+      >
+        <Text style={[styles.text, { fontSize: sizeStyles[size].fontSize }]}>
+          {title}
+        </Text>
+        {/* Optional subtle glow */}
+        {/* <View style={styles.glow} /> */}
+      </Animated.View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  hightlightButton: {
-    backgroundColor: "red",
-    width: "30%",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 16
+  button: {
+    height: 20,
+    width: 300,
+    backgroundColor: "#DF172C", // vibrant color
+    borderRadius: 8, // pill shape
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#FA816C",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 8, // Android shadow
+    marginVertical: 10
   },
-  whiteText: {
-    backgroundColor: "blue"
+  text: {
+    color: "#fff",
+    fontWeight: 400,
+    letterSpacing: 2
   },
-  darkText: { backgroundColor: "green" }
+  glow: {
+    position: "absolute",
+    width: "105%",
+    height: "110%",
+    backgroundColor: "#FF4B2B",
+    borderRadius: 30,
+    opacity: 0.15,
+    zIndex: -1
+  }
 });

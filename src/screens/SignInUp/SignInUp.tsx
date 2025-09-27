@@ -24,13 +24,11 @@ export const SignInUp: React.FC<SignInUpInterface> = () => {
         )}
       </View>
       <ReuseForm formData={[]} />
-      <HighlightButton onPressButton={onPressButton} size="lg">
-        {isFormSignIn ? (
-          <Text style={{ textAlign: "center" }}> Log In </Text>
-        ) : (
-          <Text style={{ textAlign: "center" }}> Sign Up </Text>
-        )}
-      </HighlightButton>
+      <HighlightButton
+        onPressButton={onPressButton}
+        size="lg"
+        title={isFormSignIn ? "Log In" : "Sign Up"}
+      />
     </View>
   );
 };
