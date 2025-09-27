@@ -1,6 +1,6 @@
+import React from "react";
 import { Text, View } from "react-native";
-import { brandName } from "./constants/global/global";
-import SignInUp from "./screens";
+import { BRAND_MOTTO, BRAND_NAME } from "src/constants/global";
 
 export default function Index() {
   return (
@@ -9,11 +9,12 @@ export default function Index() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        width: "100%"
+        width: "100%",
+        rowGap: 32
       }}
     >
-      <Text> {brandName} </Text>
-      <SignInUp />
+      <Text> {BRAND_NAME}</Text>
+      <Text>{BRAND_MOTTO}</Text>
     </View>
   );
 }
