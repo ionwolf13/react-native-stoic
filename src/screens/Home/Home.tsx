@@ -1,7 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { BRAND_MOTTO, BRAND_NAME } from "src/constants/global";
-import { SignInUp } from "../SignInUp/SignInUp";
 
 export const HomeScreen: React.FC<any> = () => {
   return (
@@ -24,7 +23,6 @@ export const HomeScreen: React.FC<any> = () => {
         <Text> {BRAND_NAME} </Text>
         <Text>{BRAND_MOTTO}</Text>
       </View>
-      <SignInUp />
     </View>
   );
 };

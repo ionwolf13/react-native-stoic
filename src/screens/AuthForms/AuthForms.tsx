@@ -1,11 +1,14 @@
 import React from "react";
 import { View, Text } from "react-native";
 import HighlightButton from "src/components/buttons";
-import { ReuseForm } from "@components/form";
+import { useLocalSearchParams } from "expo-router";
+import { SignInForm } from "../SignInUp/SignInForm";
+import { SignUpForm } from "../SignInUp/SignUpForm";
 
 interface SignInUpInterface {}
 
-export const SignInUp: React.FC<SignInUpInterface> = () => {
+export const AuthForms: React.FC<SignInUpInterface> = () => {
+  const { form } = useLocalSearchParams();
   const [isFormSignIn, setIsFormSignIn] = React.useState<boolean>(false);
 
   const onPressButton = () => {
@@ -23,7 +26,7 @@ export const SignInUp: React.FC<SignInUpInterface> = () => {
           <Text style={{ textAlign: "center" }}> Join Us! </Text>
         )}
       </View>
-      <ReuseForm formData={[]} />
+      {isFormSignIn ? <SignInForm /> : <SignUpForm />}
       <HighlightButton
         onPressButton={onPressButton}
         size="lg"
